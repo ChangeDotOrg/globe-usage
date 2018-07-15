@@ -1,17 +1,20 @@
 const path = require('path')
-const webpack = require('webpack');
-const HtmlWebPackPlugin = require("html-webpack-plugin");
+const webpack = require('webpack')
+const HtmlWebPackPlugin = require("html-webpack-plugin")
 // The path to the Cesium source code
-const cesiumSource = 'node_modules/cesium/Source';
-const cesiumWorkers = '../Build/Cesium/Workers';
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const cesiumSource = 'node_modules/cesium/Source'
+const cesiumWorkers = '../Build/Cesium/Workers'
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = [{
   context: __dirname,
   target: 'electron-renderer',
   entry: {
 		app: './src/index.js'
-	},
+  },
+  watchOptions: {
+    ignored: ['dist', 'node_modules']
+  },
   resolve: {
 		alias: {
 			// Cesium module name
@@ -19,7 +22,7 @@ module.exports = [{
 		}
 	},
   output: {
-    filename: 'bundle.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
 
     // Needed to compile multiline strings in Cesium
@@ -45,7 +48,7 @@ module.exports = [{
       },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: [/node_modules/, /dist/],
         use: {
           loader: "babel-loader"
         }
@@ -65,28 +68,15 @@ module.exports = [{
     // new CopyWebpackPlugin([{from: path.join(cesiumSource, cesiumWorkers), to: 'Workers'}]),
     // new CopyWebpackPlugin([{from: path.join(cesiumSource, 'Assets'), to: 'Assets'}]),
     // new CopyWebpackPlugin([{from: path.join(cesiumSource, 'Widgets'), to: 'Widgets'}]),
-    new CopyWebpackPlugin([{
-        from: path.join(cesiumSource, "Assets"),
-        to:  "cesium/Assets",
-    }, {
-        from: path.join(cesiumSource, "ThirdParty"),
-        to: "cesium/ThirdParty",
-    }, {
-        from: path.join(cesiumSource, "Widgets"),
-        to: "cesium/Widgets",
-    }, {
-        from: path.join(cesiumSource, "Workers"),
-        to: "cesium/Workers",
-    }]),
     new webpack.DefinePlugin({
       // Define relative base path in cesium for loading assets
-      CESIUM_BASE_URL: JSON.stringify('')
+      CESIUM_BASE_URL: JSON.stringify('./')
     }),
     // Split cesium into a seperate bundle
   //   new config.optimization.splitChunks({
   //     name: 'cesium',
   //     minChunks: function (module) {
-  //         return module.context && module.context.indexOf('cesium') !== -1;
+  //         return module.context && module.context.indexOf('cesium') !== -1
   //     }
   // })
   ],
@@ -94,4 +84,4 @@ module.exports = [{
     devServer: {
         contentBase: path.join(__dirname, "dist")
     }
-}];
+}]
