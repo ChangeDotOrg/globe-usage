@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 // import 'cesium/Widgets/widgets.css'
 // import Cesium from 'cesium/Build/Cesium/Cesium.js'
-import Viewer from "cesium/Source/Widgets/Viewer/Viewer";
-// import "cesium/Source/Widgets/widgets.css";
+// import Viewer from "cesium/Source/Widgets/Viewer/Viewer";
 // import Cesium from 'cesium/Cesium'
-
+import Cesium from 'cesium/Cesium';
+import "cesium/Widgets/widgets.css";
 class App extends Component {
 
   constructor(props){
@@ -17,7 +17,7 @@ class App extends Component {
   componentDidMount(){
     // this.setState((prevState, props) => {
     //   return {
-      this.viewer = new Viewer("cesiumContainer");
+      this.viewer = new Cesium.Viewer("cesiumContainer");
       // };
     // });
   }
