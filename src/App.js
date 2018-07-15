@@ -1,6 +1,5 @@
 import React, { Component } from "react"
-import Cesium from 'cesium/Cesium'
-import "cesium/Widgets/widgets.css"
+import CesiumComp from './components/Cesium'
 
 class App extends Component {
 
@@ -11,15 +10,11 @@ class App extends Component {
     }
   }
 
-  componentDidMount(){
-    this.viewer = new Cesium.Viewer("cesiumContainer")
-  }
-
   render(){
     return (
-      <div>
-           <div id="cesiumContainer"/>
-      </div>
+        <div id="AppDiv">
+          <CesiumComp viewer={this.state.viewer}/>
+        </div>
     )
   }
 
